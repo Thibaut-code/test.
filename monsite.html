@@ -1,88 +1,496 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon premier site</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #111827;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+<title>Infrastructure Dashboard</title>
 
-        .container {
-            text-align: center;
-            background: #1f2937;
-            padding: 50px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-        }
+<style>
 
-        h1 {
-            font-size: 42px;
-            margin-bottom: 10px;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        p {
-            color: #9ca3af;
-            font-size: 18px;
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+    display: flex;
+}
 
-        button {
-            margin-top: 25px;
-            padding: 15px 30px;
-            font-size: 16px;
-            border: none;
-            border-radius: 10px;
-            background: #3b82f6;
-            color: white;
-            cursor: pointer;
-        }
+/* ============================= */
+/* MENU GAUCHE */
+/* ============================= */
 
-        button:hover {
-            background: #2563eb;
-        }
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    background: #020617;
+    padding: 25px;
+    position: fixed;
+}
 
-        #message {
-            margin-top: 25px;
-            font-size: 20px;
-            color: #4ade80;
-        }
-    </style>
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    color: #38bdf8;
+}
+
+.menu-item {
+    padding: 14px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #94a3b8;
+}
+
+.menu-item:hover {
+    background: #1e293b;
+    color: white;
+}
+
+.menu-item.active {
+    background: #2563eb;
+    color: white;
+}
+
+/* ============================= */
+/* CONTENU */
+/* ============================= */
+
+.main {
+    margin-left: 240px;
+    padding: 35px;
+    width: calc(100% - 240px);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.refresh {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.refresh:hover {
+    background: #1d4ed8;
+}
+
+/* ============================= */
+/* STATISTIQUES */
+/* ============================= */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.card {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.card-title {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.card-value {
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.green {
+    color: #22c55e;
+}
+
+.red {
+    color: #ef4444;
+}
+
+.orange {
+    color: #f59e0b;
+}
+
+.blue {
+    color: #38bdf8;
+}
+
+/* ============================= */
+/* SERVEURS */
+/* ============================= */
+
+.section {
+    margin-top: 35px;
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th {
+    text-align: left;
+    color: #94a3b8;
+    padding: 12px;
+    border-bottom: 1px solid #334155;
+}
+
+td {
+    padding: 15px 12px;
+    border-bottom: 1px solid #334155;
+}
+
+.status {
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.online {
+    background: rgba(34,197,94,0.15);
+    color: #22c55e;
+}
+
+.offline {
+    background: rgba(239,68,68,0.15);
+    color: #ef4444;
+}
+
+/* ============================= */
+/* BARRES CPU */
+/* ============================= */
+
+.progress {
+    width: 100px;
+    background: #334155;
+    height: 8px;
+    border-radius: 10px;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #38bdf8;
+    border-radius: 10px;
+}
+
+/* ============================= */
+/* INCIDENTS */
+/* ============================= */
+
+.incident {
+    background: #0f172a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.priority {
+    color: #ef4444;
+    font-weight: bold;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<div class="container">
+<!-- MENU -->
 
-    <h1>🚀 Mon premier site</h1>
+<div class="sidebar">
 
-    <p>
-        Ce site fonctionne directement depuis Visual Studio Code.
-    </p>
+    <div class="logo">
+        ⚡ INFRA CONTROL
+    </div>
 
-    <button onclick="afficherMessage()">
-        Clique ici
-    </button>
+    <div class="menu-item active">
+        📊 Dashboard
+    </div>
 
-    <div id="message"></div>
+    <div class="menu-item">
+        🖥️ Servers
+    </div>
+
+    <div class="menu-item">
+        🌐 Network
+    </div>
+
+    <div class="menu-item">
+        ☁️ Azure
+    </div>
+
+    <div class="menu-item">
+        🚨 Incidents
+    </div>
+
+    <div class="menu-item">
+        ⚙️ Settings
+    </div>
+
+</div>
+
+<!-- CONTENU -->
+
+<div class="main">
+
+    <div class="header">
+
+        <div>
+            <h1>Infrastructure Dashboard</h1>
+            <p style="color:#94a3b8">
+                Monitoring environnement production
+            </p>
+        </div>
+
+        <button class="refresh" onclick="refreshDashboard()">
+            🔄 Refresh
+        </button>
+
+    </div>
+
+    <!-- STATISTIQUES -->
+
+    <div class="cards">
+
+        <div class="card">
+            <div class="card-title">
+                SERVERS ONLINE
+            </div>
+
+            <div class="card-value green" id="online">
+                24
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                SERVERS OFFLINE
+            </div>
+
+            <div class="card-value red" id="offline">
+                1
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                ACTIVE INCIDENTS
+            </div>
+
+            <div class="card-value orange">
+                3
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                AZURE RESOURCES
+            </div>
+
+            <div class="card-value blue">
+                147
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SERVEURS -->
+
+    <div class="section">
+
+        <h2>🖥️ Server Monitoring</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Server</th>
+                    <th>Environment</th>
+                    <th>Status</th>
+                    <th>CPU</th>
+                    <th>RAM</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>WEB-PROD-01</td>
+                    <td>Production</td>
+                    <td>
+                        <span class="status online">
+                            Online
+                        </span>
+                    </td>
+                    <td>
+                        <div class="progress">
+                            <div class="progress-bar"
+                                 style="width:32%">
+                            </div>
+                        </div>
+                        32%
+                    </td>
+                    <td>58%</td>
+                </tr>
+
+                <tr>
+                    <td>API-PROD-01</td>
+                    <td>Production</td>
+                    <td>
+                        <span class="status online">
+                            Online
+                        </span>
+                    </td>
+                    <td>
+                        <div class="progress">
+                            <div class="progress-bar"
+                                 style="width:67%">
+                            </div>
+                        </div>
+                        67%
+                    </td>
+                    <td>72%</td>
+                </tr>
+
+                <tr>
+                    <td>DB-PROD-01</td>
+                    <td>Production</td>
+                    <td>
+                        <span class="status offline">
+                            Offline
+                        </span>
+                    </td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+
+                <tr>
+                    <td>WEB-ACC-01</td>
+                    <td>Acceptance</td>
+                    <td>
+                        <span class="status online">
+                            Online
+                        </span>
+                    </td>
+                    <td>
+                        <div class="progress">
+                            <div class="progress-bar"
+                                 style="width:18%">
+                            </div>
+                        </div>
+                        18%
+                    </td>
+                    <td>41%</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- INCIDENTS -->
+
+    <div class="section">
+
+        <h2>🚨 Active Incidents</h2>
+
+        <div class="incident">
+
+            <div>
+                PensionMotor response time > 30 seconds
+            </div>
+
+            <div class="priority">
+                P1
+            </div>
+
+        </div>
+
+        <div class="incident">
+
+            <div>
+                Certificate expiration detected
+            </div>
+
+            <div style="color:#f59e0b">
+                P2
+            </div>
+
+        </div>
+
+        <div class="incident">
+
+            <div>
+                High CPU on API-PROD-01
+            </div>
+
+            <div style="color:#f59e0b">
+                P2
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
 <script>
 
-function afficherMessage() {
+/* ============================= */
+/* SIMULATION REFRESH */
+/* ============================= */
 
-    const message = document.getElementById("message");
+function refreshDashboard() {
 
-    message.innerHTML = "🎉 JavaScript fonctionne !";
+    const button = document.querySelector(".refresh");
+
+    button.innerHTML = "⏳ Refreshing...";
+
+    setTimeout(function() {
+
+        // génère des valeurs aléatoires
+
+        const online =
+            Math.floor(Math.random() * 4) + 22;
+
+        const offline =
+            25 - online;
+
+        document.getElementById("online")
+            .innerText = online;
+
+        document.getElementById("offline")
+            .innerText = offline;
+
+        button.innerHTML = "🔄 Refresh";
+
+    }, 800);
 
 }
 
